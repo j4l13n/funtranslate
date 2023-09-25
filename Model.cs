@@ -1,10 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+// namespace funtranslate.Model;
 
 public class FunTranslateContext : DbContext
 {
+    public FunTranslateContext(DbContextOptions options) : base(options) { }
     public DbSet<User> Users { get; set; }
+    #region Required
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<User>()
+            .Property(b => b.Email)
+            .IsRequired();
+    }
+    #endregion
     public DbSet<Record> Records { get; set; }
 
     public string DbPath { get; }

@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+// using funtranslate.Model;
+// using funtranslate.Query;
+
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,14 +19,17 @@ builder.Services.AddCors(options =>
         });
 });
 builder.Services.AddHttpClient();
-
+builder.Services
+    .AddGraphQLServer()
+    .AddQueryType<Query>()
+    .AddFiltering();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    // The default HOSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 } else {
     // Add OpenAPI 3.0 document serving middleware
@@ -40,11 +47,11 @@ app.UseRouting();
 
 app.UseCors(MyAllowSpecificOrigins);
 
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapFallbackToFile("index.html");
+app.MapGraphQL();
 
 app.Run();
