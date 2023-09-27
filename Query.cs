@@ -12,6 +12,7 @@ public class Query
         return users;
     }
 
+    [UseFiltering]
     public List<Record> GetRecords()
     {
         using var db = new FunTranslateContext();

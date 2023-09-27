@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-// namespace funtranslate.Controllers.FunTranslateController;
 
 
 public class TranslationResponse
@@ -173,7 +172,7 @@ public class FunTranslateController : ControllerBase
                         string originalText = response.Contents.Text;
                         string translationType = response.Contents.Translation;
                         await db.AddAsync(
-                            new Record { InputText = originalText, FunText = translatedText, TargetLanguage = translationType, UserId = 0 }
+                            new Record { InputText = originalText, FunText = translatedText, TargetLanguage = translationType, UserId = 9 }
                         );
                         await db.SaveChangesAsync();
                         // You can parse and process the response JSON here
