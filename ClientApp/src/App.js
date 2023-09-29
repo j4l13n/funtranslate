@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import React, { useReducer, useEffect, useMemo, Component } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import React, { useReducer, useEffect, useMemo } from "react";
+import { Toaster } from "react-hot-toast";
 import { ApolloProvider } from "@apollo/client";
 import jwtDecode from "jwt-decode";
 import { ApolloClient, InMemoryCache } from '@apollo/client';
@@ -8,7 +8,6 @@ import { ApolloClient, InMemoryCache } from '@apollo/client';
 import AppRoutes from "./AppRoutes";
 import { Layout } from "./components/Layout";
 import { reducer } from "./lib/reducer";
-import useApollo from "./hooks/useApollo";
 import "./custom.css";
 
 export const AuthContext = React.createContext({});
@@ -20,17 +19,27 @@ export default function App({ pageProps }) {
     user: {},
   });
 
+  let uri = process.env.GRAPHQL_API || 'https://localhost:7281/graphql/'
+
   const client = new ApolloClient({
-    uri: 'https://localhost:7281/graphql/',
+    uri,
     cache: new InMemoryCache(),
   });
 
   const removeUserId = () => {
+    localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    dispatch({
+      type: "SIGN_OUT_USER",
+      payload: {
+        token: undefined,
+        userId: undefined,
+      },
+    });
   };
 
   const setUserId = (userId, token) => {
-    if (localStorage.userId) {
+    if (localStorage.userId || localStorage.token) {
       removeUserId();
     }
     localStorage.setItem("userId", userId);
@@ -45,13 +54,8 @@ export default function App({ pageProps }) {
     });
   };
 
-  // const client = useApollo({
-  //   initialState: pageProps.initialApolloState,
-  //   token: state.token,
-  // });
-
   const setToken = (token) => {
-    if (localStorage.token || localStorage.restToken) {
+    if (localStorage.token) {
       removeToken();
     }
 
