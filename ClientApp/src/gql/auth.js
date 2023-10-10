@@ -31,8 +31,10 @@ export const REGISTER = gql`
 export const USERS = gql`
   query {
     users {
-      id
-      email
+      users {
+        id
+        email
+      }
     }
   }
 `;

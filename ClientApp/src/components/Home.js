@@ -72,13 +72,13 @@ export function Home() {
 
   const rows = [];
 
-  for (let record in records?.records) {
+  for (let record in records?.records?.records) {
     rows.push({
-      id: records?.records[record]?.id,
-      originalText: records?.records[record]?.inputText,
-      translatedText: records?.records[record]?.funText,
-      userId: records?.records[record]?.userId,
-      translationStyle: records?.records[record]?.targetLanguage,
+      id: records?.records?.records[record]?.id,
+      originalText: records?.records?.records[record]?.inputText,
+      translatedText: records?.records?.records[record]?.funText,
+      userId: records?.records?.records[record]?.userId,
+      translationStyle: records?.records?.records[record]?.targetLanguage,
     });
   }
 
